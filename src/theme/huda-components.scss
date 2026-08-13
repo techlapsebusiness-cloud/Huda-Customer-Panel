@@ -298,12 +298,22 @@ ion-segment.huda-segment {
 ion-segment.huda-segment ion-segment-button {
   --border-radius: var(--radius-pill);
   --indicator-color: var(--brand);
+  /* md draws the indicator as a 2px underline, which would leave the checked
+     label white-on-white. Force the full-height pill the ios style uses. */
+  --indicator-height: 100%;
+  --indicator-box-shadow: none;
   --color: var(--text-muted);
   --color-checked: #fff;
+  --background-hover: var(--brand);
+  --background-focused: var(--brand);
   min-height: 34px;
   font-weight: 600;
   text-transform: none;
   font-size: 13px;
+}
+
+ion-segment.huda-segment ion-segment-button::part(indicator-background) {
+  border-radius: var(--radius-pill);
 }
 
 /* Table-like lists §4.3 */
