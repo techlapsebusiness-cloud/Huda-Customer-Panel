@@ -1,0 +1,149 @@
+<ion-content class="huda-page huda-auth-bg">
+  <div class="auth-wrap">
+    <div class="brand">
+      <div class="mark">H</div>
+      <div>
+        <div class="brand-name">HUDA Care</div>
+        <div class="brand-sub">Your clinic, in your pocket</div>
+      </div>
+    </div>
+
+    <div class="huda-card">
+      <div class="huda-card-pad">
+        @if (step === 'phone') {
+          <h1 class="auth-title">Sign in</h1>
+          <p class="auth-sub">
+            We'll text a 6-digit code to your mobile number.
+          </p>
+
+          <label class="huda-field-label" for="phone">Mobile number *</label>
+          <div class="phone-row">
+            <span class="cc huda-mono">+91</span>
+            <input
+              id="phone"
+              class="huda-text-input"
+              type="tel"
+              inputmode="numeric"
+              autocomplete="tel"
+              placeholder="98765 43210"
+              maxlength="15"
+              [(ngModel)]="phone"
+              (keyup.enter)="sendCode()"
+            />
+          </div>
+
+          @if (error) {
+            <p class="auth-error">{{ error }}</p>
+          }
+
+          <ion-button
+            expand="block"
+            class="huda-btn-primary submit"
+            [disabled]="!phoneValid || busy"
+            (click)="sendCode()"
+          >
+            @if (busy) {
+              <ion-spinner name="crescent"></ion-spinner>
+            } @else {
+              Send code
+            }
+          </ion-button>
+        }
+
+        @if (step === 'code') {
+          <h1 class="auth-title">Enter the code</h1>
+          <p class="auth-sub">
+            Sent to <strong class="huda-mono">+91 {{ phone }}</strong>
+          </p>
+
+          <input
+            class="huda-otp-input"
+            type="tel"
+            inputmode="numeric"
+            autocomplete="one-time-code"
+            placeholder="000000"
+            maxlength="6"
+            [ngModel]="code"
+            (ngModelChange)="onCodeInput($event)"
+            (keyup.enter)="verify()"
+          />
+
+          @if (devCode) {
+            <p class="dev-hint huda-mono">Dev code: {{ devCode }}</p>
+          }
+
+          @if (error) {
+            <p class="auth-error">{{ error }}</p>
+          }
+
+          <ion-button
+            expand="block"
+            class="huda-btn-primary submit"
+            [disabled]="!codeValid || busy"
+            (click)="verify()"
+          >
+            @if (busy) {
+              <ion-spinner name="crescent"></ion-spinner>
+            } @else {
+              Verify & continue
+            }
+          </ion-button>
+
+          <div class="resend-row">
+            @if (resendIn > 0) {
+              <span class="huda-meta">Resend in {{ resendIn }}s</span>
+            } @else {
+              <a class="huda-link" (click)="resend()">Resend code</a>
+            }
+            <a class="huda-link" (click)="back()">Change number</a>
+          </div>
+        }
+
+        @if (step === 'name') {
+          <h1 class="auth-title">Welcome</h1>
+          <p class="auth-sub">Tell us your name so the clinic can find you.</p>
+
+          <label class="huda-field-label" for="name">Full name *</label>
+          <input
+            id="name"
+            class="huda-text-input"
+            type="text"
+            autocomplete="name"
+            placeholder="e.g. Priya Sharma"
+            [(ngModel)]="name"
+          />
+
+          <label class="consent">
+            <ion-checkbox [(ngModel)]="consent" labelPlacement="end">
+              <span class="consent-text">
+                I agree to the clinic storing my details and contacting me about
+                my appointments.
+              </span>
+            </ion-checkbox>
+          </label>
+
+          @if (error) {
+            <p class="auth-error">{{ error }}</p>
+          }
+
+          <ion-button
+            expand="block"
+            class="huda-btn-primary submit"
+            [disabled]="!name.trim() || !consent || busy"
+            (click)="saveName()"
+          >
+            @if (busy) {
+              <ion-spinner name="crescent"></ion-spinner>
+            } @else {
+              Get started
+            }
+          </ion-button>
+        }
+      </div>
+    </div>
+
+    <p class="legal">
+      By continuing you agree to our terms of use and privacy policy.
+    </p>
+  </div>
+</ion-content>

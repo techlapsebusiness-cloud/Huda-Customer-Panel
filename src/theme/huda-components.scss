@@ -1,0 +1,487 @@
+/* Shared HUDA UI kit — handoff §4 */
+
+.huda-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.huda-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.huda-kpi {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  color: var(--brand-strong);
+  line-height: 1.15;
+}
+
+.huda-page {
+  --background: var(--surface-page);
+}
+
+.huda-page-pad {
+  padding: var(--content-pad-top) var(--content-pad-x) var(--content-pad-bottom);
+}
+
+.huda-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.huda-page-header h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 23px;
+  letter-spacing: -0.02em;
+  color: var(--text-strong);
+}
+
+.huda-page-header p {
+  margin: 6px 0 0;
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+/* Buttons §4.1 */
+.huda-btn-primary,
+ion-button.huda-btn-primary {
+  --background: var(--brand);
+  --background-hover: var(--brand-strong);
+  --background-activated: var(--brand-strong);
+  --color: #fff;
+  --border-radius: var(--radius-pill);
+  --box-shadow: var(--shadow-brand);
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --padding-start: 22px;
+  --padding-end: 22px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.huda-btn-ghost,
+ion-button.huda-btn-ghost {
+  --background: #fff;
+  --background-hover: var(--brand-soft);
+  --color: var(--text-body);
+  --border-width: 1px;
+  --border-style: solid;
+  --border-color: var(--border-subtle);
+  --border-radius: var(--radius-pill);
+  --box-shadow: none;
+  font-weight: 600;
+  text-transform: none;
+}
+
+.huda-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  border: 1px solid var(--border-subtle);
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  color: var(--text-body);
+}
+
+.huda-icon-btn .dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--danger-500);
+  box-shadow: 0 0 0 2px #fff;
+}
+
+/* Cards §4.2 */
+.huda-card,
+ion-card.huda-card {
+  margin: 0;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  background: var(--surface-card);
+  overflow: hidden;
+}
+
+ion-card.huda-card {
+  --background: var(--surface-card);
+}
+
+.huda-card.lift:hover,
+ion-card.huda-card.lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.huda-card-pad {
+  padding: 20px 22px;
+}
+
+.huda-card-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-strong);
+  margin: 0 0 12px;
+}
+
+.huda-inverse {
+  background: var(--grad-ink);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-modal);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.huda-inverse .token {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 56px;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.huda-inverse .muted {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13.5px;
+}
+
+/* Badges §4.4 */
+.huda-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 11px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.huda-badge.success {
+  background: var(--success-50);
+  color: var(--success-500);
+}
+.huda-badge.warning {
+  background: var(--warning-50);
+  color: var(--warning-500);
+}
+.huda-badge.danger {
+  background: var(--danger-50);
+  color: var(--danger-500);
+}
+.huda-badge.info {
+  background: var(--brand-soft);
+  color: var(--brand-strong);
+}
+.huda-badge.neutral {
+  background: var(--ink-100);
+  color: var(--text-muted);
+}
+
+/* Avatar §4.3 */
+.huda-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--azure-50);
+  color: var(--brand-strong);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Empty §4.9 */
+.huda-empty {
+  text-align: center;
+  padding: 40px 24px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.huda-empty .tile {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 14px;
+  border-radius: 18px;
+  background: var(--brand-soft);
+  color: var(--brand-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+
+.huda-empty h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.huda-empty p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13.5px;
+}
+
+/* Forms §4.5 */
+.huda-field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-strong);
+  margin-bottom: 7px;
+}
+
+ion-input.huda-input,
+ion-textarea.huda-input,
+ion-select.huda-input {
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --padding-top: 11px;
+  --padding-bottom: 11px;
+  --background: #fff;
+  --border-radius: var(--radius-input);
+  --border-width: 1px;
+  --border-style: solid;
+  --border-color: var(--border-default);
+  --highlight-color-focused: var(--brand);
+  margin-bottom: 12px;
+}
+
+/* Segment §4.7 */
+.huda-segment {
+  display: inline-flex;
+  padding: 5px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  background: #fff;
+  gap: 4px;
+}
+
+ion-segment.huda-segment {
+  --background: #fff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+}
+
+ion-segment.huda-segment ion-segment-button {
+  --border-radius: var(--radius-pill);
+  --indicator-color: var(--brand);
+  --color: var(--text-muted);
+  --color-checked: #fff;
+  min-height: 34px;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 13px;
+}
+
+/* Table-like lists §4.3 */
+.huda-table ion-item {
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --inner-padding-end: 0;
+  --min-height: 52px;
+  --border-color: var(--ink-100);
+  font-size: 14px;
+}
+
+.huda-table ion-item:hover {
+  --background: var(--ink-50);
+}
+
+.huda-table .col-head {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* KPI strip */
+.huda-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--kpi-gap);
+  margin-bottom: var(--card-gap);
+}
+
+@media (max-width: 992px) {
+  .huda-kpi-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .huda-kpi-strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+.huda-kpi-tile {
+  background: #fff;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-xs);
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.huda-kpi-tile:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.huda-kpi-tile .label {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+/* Workspace + rail */
+.huda-workspace {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--card-gap);
+  align-items: start;
+}
+
+.huda-list-panel {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: var(--card-gap);
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .huda-workspace,
+  .huda-list-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.huda-rail {
+  position: sticky;
+  top: 12px;
+}
+
+.huda-form-narrow {
+  max-width: 640px;
+}
+
+/* Modal chrome */
+.huda-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 24px 28px 8px;
+}
+
+.huda-modal-header h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+}
+
+.huda-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 28px 28px;
+}
+
+/* Link action */
+.huda-link {
+  color: var(--text-link);
+  font-weight: 600;
+  font-size: 13.5px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.huda-link:hover {
+  text-decoration: underline;
+}
+
+/* Auth wash */
+.huda-auth-bg {
+  --background: radial-gradient(ellipse 80% 60% at 50% 0%, #dbeafe 0%, var(--surface-page) 55%);
+}
+
+/* Hide default page headers when shell utility is used — pages keep menu button on mobile */
+.huda-content-toolbar {
+  --background: transparent;
+  --border-width: 0;
+  --padding-start: var(--content-pad-x);
+  --padding-end: var(--content-pad-x);
+}
+
+/* Slim page toolbars under shell utility bar */
+ion-header.huda-ion-header ion-toolbar {
+  --background: var(--surface-page);
+  --border-width: 0;
+  --min-height: 52px;
+  --padding-start: var(--content-pad-x);
+  --padding-end: var(--content-pad-x);
+}
+
+ion-modal {
+  --border-radius: var(--radius-modal);
+}
+
+ion-modal ion-header ion-toolbar {
+  --background: #fff;
+  --border-width: 0;
+  --padding-start: 20px;
+  --padding-end: 12px;
+  --min-height: 64px;
+}
+
+ion-modal ion-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+}
+
+ion-searchbar {
+  --background: #fff;
+  --border-radius: var(--radius-input);
+  --box-shadow: none;
+  --border: 1px solid var(--border-default);
+}

@@ -1,0 +1,172 @@
+.step {
+  margin-bottom: 22px;
+}
+
+.step-head {
+  margin-bottom: 10px;
+}
+
+.step-head h2 {
+  margin: 2px 0 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-strong);
+}
+
+/* Doctors */
+.doctor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.doctor-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.doctor-row.selected {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.doc-meta {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.doc-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.doctor-row .pick {
+  font-size: 20px;
+  color: var(--brand-strong);
+}
+
+/* Day strip */
+.day-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.day-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.day-chip {
+  flex: 0 0 auto;
+  width: 56px;
+  padding: 10px 0;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-input);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+}
+
+.day-chip.selected {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.day-chip .wd {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.day-chip .dd {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+
+.day-chip.selected .wd,
+.day-chip.selected .dd {
+  color: var(--brand-strong);
+}
+
+.form-error {
+  margin: 0 0 4px;
+  font-size: 13px;
+  color: var(--danger-500);
+}
+
+/* Confirmation */
+.confirm {
+  text-align: center;
+}
+
+.confirm .tick {
+  width: 64px;
+  height: 64px;
+  margin: 12px auto 16px;
+  border-radius: 50%;
+  background: var(--success-50);
+  color: var(--success-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
+.confirm h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--text-strong);
+}
+
+.confirm .sub {
+  margin: 6px 0 20px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.token-card {
+  text-align: center;
+}
+
+.token-card .token {
+  margin: 6px 0;
+}
+
+.qr-card {
+  margin-top: var(--card-gap);
+  text-align: left;
+}
+
+.qr-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.huda-link-btn {
+  --color: var(--text-muted);
+  font-weight: 600;
+  margin-top: 4px;
+}

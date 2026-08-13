@@ -1,0 +1,143 @@
+<ion-content class="huda-page">
+  <ion-refresher slot="fixed" (ionRefresh)="load($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="huda-page-pad">
+    <huda-page-header
+      title="My records"
+      subtitle="Reports and scans you've shared with the clinic"
+    ></huda-page-header>
+
+    <div class="filters">
+      <button
+        type="button"
+        class="filter-chip"
+        [class.selected]="filter === 'all'"
+        (click)="filter = 'all'"
+      >
+        All
+      </button>
+      @for (t of uploadTypes; track t.value) {
+        <button
+          type="button"
+          class="filter-chip"
+          [class.selected]="filter === t.value"
+          (click)="filter = t.value"
+        >
+          {{ t.label }}
+        </button>
+      }
+    </div>
+
+    @if (uploading) {
+      <div class="huda-card uploading">
+        <div class="huda-card-pad huda-row">
+          <span class="huda-meta">Uploading…</span>
+          <ion-spinner name="crescent"></ion-spinner>
+        </div>
+      </div>
+    }
+
+    @if (loading) {
+      <div class="huda-stack">
+        @for (i of [1, 2, 3]; track i) {
+          <div class="huda-card">
+            <div class="huda-card-pad">
+              <ion-skeleton-text animated style="width: 60%; height: 15px"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 35%; height: 12px; margin-top: 8px"></ion-skeleton-text>
+            </div>
+          </div>
+        }
+      </div>
+    } @else if (error) {
+      <div class="huda-card">
+        <div class="huda-card-pad">
+          <p class="err">{{ error }}</p>
+          <ion-button class="huda-btn-ghost" size="small" (click)="load()">
+            Retry
+          </ion-button>
+        </div>
+      </div>
+    } @else if (filtered.length) {
+      <div class="huda-stack">
+        @for (d of filtered; track d.id) {
+          <div class="huda-card doc">
+            <div class="huda-card-pad huda-row">
+              <a
+                class="doc-main"
+                [href]="d.fileUrl"
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="thumb" [ngClass]="d.type">
+                  <ion-icon
+                    [name]="
+                      d.mimeType === 'application/pdf'
+                        ? 'document-text-outline'
+                        : 'image-outline'
+                    "
+                  ></ion-icon>
+                </span>
+                <span class="doc-text">
+                  <span class="doc-name">
+                    {{ d.originalName || typeLabels[d.type] }}
+                  </span>
+                  <span class="huda-meta">
+                    {{ typeLabels[d.type] }}
+                    @if (d.category) {
+                      · {{ d.category }}
+                    }
+                    @if (d.createdAt) {
+                      · {{ d.createdAt | date: 'd MMM y' }}
+                    }
+                    @if (d.fileSize) {
+                      · {{ sizeLabel(d.fileSize) }}
+                    }
+                  </span>
+                </span>
+              </a>
+              @if (d.type !== 'prescription') {
+                <button type="button" class="huda-icon-btn" (click)="remove(d)">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="huda-card">
+        <huda-empty-state
+          icon="cloud-upload-outline"
+          title="No records yet"
+          body="Upload lab reports, X-rays or scans so your doctor has them ready."
+        >
+          <ion-button class="huda-btn-primary" (click)="startUpload()">
+            Upload a file
+          </ion-button>
+        </huda-empty-state>
+      </div>
+    }
+
+    <input
+      #fileInput
+      type="file"
+      accept="image/png,image/jpeg,application/pdf"
+      hidden
+      (change)="onFileSelected($event)"
+    />
+
+    <div class="huda-action-bar">
+      <ion-button
+        expand="block"
+        class="huda-btn-primary"
+        [disabled]="uploading"
+        (click)="startUpload()"
+      >
+        <ion-icon slot="start" name="add-outline"></ion-icon>
+        Upload a document
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

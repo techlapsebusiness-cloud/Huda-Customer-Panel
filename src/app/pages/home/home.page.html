@@ -1,0 +1,165 @@
+<ion-content class="huda-page">
+  <ion-refresher slot="fixed" (ionRefresh)="load($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="huda-page-pad">
+    <huda-page-header
+      [eyebrow]="'Hello, ' + greetingName"
+      title="Your health, at a glance"
+    ></huda-page-header>
+
+    @if (loading) {
+      <div class="huda-card">
+        <div class="huda-card-pad">
+          <ion-skeleton-text animated style="width: 55%; height: 14px"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 80%; height: 22px; margin-top: 12px"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%; height: 14px; margin-top: 12px"></ion-skeleton-text>
+        </div>
+      </div>
+    } @else {
+      @if (error) {
+        <div class="huda-card error-card">
+          <div class="huda-card-pad">
+            <p class="err">{{ error }}</p>
+            <ion-button class="huda-btn-ghost" size="small" (click)="load()">
+              Retry
+            </ion-button>
+          </div>
+        </div>
+      }
+
+      <div class="huda-stack">
+        @if (nextAppointment; as appt) {
+          <!-- Live queue takes over the card when the visit is today -->
+          @if (queue && queue.isActive) {
+            <div class="huda-queue-band" (click)="openAppointment(appt.id)">
+              <div class="huda-eyebrow light">Now serving</div>
+              <div class="now-serving huda-mono">
+                {{ queue.nowServing !== null ? '#' + queue.nowServing : '—' }}
+              </div>
+              <div class="queue-tiles">
+                <div class="stat-tile">
+                  <div class="muted">Your token</div>
+                  <div class="tile-value huda-mono">#{{ queue.myToken }}</div>
+                </div>
+                <div class="stat-tile">
+                  <div class="muted">Ahead of you</div>
+                  <div class="tile-value huda-mono">{{ queue.peopleAhead }}</div>
+                </div>
+                <div class="stat-tile">
+                  <div class="muted">Approx. wait</div>
+                  <div class="tile-value huda-mono">
+                    {{ queue.etaMinutes ?? 0 }}m
+                  </div>
+                </div>
+              </div>
+              <div class="track-row">
+                <span class="muted">Track your place in the queue</span>
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+              </div>
+            </div>
+          } @else {
+            <div class="huda-card lift" (click)="openAppointment(appt.id)">
+              <div class="huda-card-pad">
+                <div class="huda-row">
+                  <span class="huda-eyebrow">Next appointment</span>
+                  <huda-badge
+                    [variant]="badge(appt.status)"
+                    [label]="statusLabel(appt.status)"
+                  ></huda-badge>
+                </div>
+                <h2 class="appt-when huda-mono">
+                  {{ appt.date | date: 'EEE, d MMM' }} · {{ appt.startTime }}
+                </h2>
+                <p class="appt-doc">{{ appt.doctorName }}</p>
+                <div class="huda-row token-row">
+                  <span class="huda-meta">Token</span>
+                  <span class="token huda-mono">#{{ appt.tokenNumber }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        } @else {
+          <div class="huda-card">
+            <huda-empty-state
+              icon="calendar-outline"
+              title="No upcoming visits"
+              body="Book an appointment and we'll hold your token in the queue."
+            >
+              <ion-button class="huda-btn-primary" (click)="book()">
+                Book appointment
+              </ion-button>
+            </huda-empty-state>
+          </div>
+        }
+
+        @if (upcoming.length > 1) {
+          <div class="huda-card">
+            <div class="huda-card-pad">
+              <div class="huda-row">
+                <h3 class="huda-card-title no-margin">Also coming up</h3>
+                <a class="huda-link" routerLink="/tabs/appointments">View all</a>
+              </div>
+              <div class="huda-row-list">
+                @for (a of upcoming.slice(1, 4); track a.id) {
+                  <div class="huda-row list-row" (click)="openAppointment(a.id)">
+                    <div>
+                      <div class="row-title huda-mono">
+                        {{ a.date | date: 'd MMM' }} · {{ a.startTime }}
+                      </div>
+                      <div class="huda-meta">{{ a.doctorName }}</div>
+                    </div>
+                    <huda-badge
+                      [variant]="badge(a.status)"
+                      [label]="statusLabel(a.status)"
+                    ></huda-badge>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        <div class="huda-card">
+          <div class="huda-card-pad">
+            <div class="huda-row">
+              <h3 class="huda-card-title no-margin">Recent records</h3>
+              <a class="huda-link" routerLink="/tabs/records">View all</a>
+            </div>
+            @if (recentDocs.length) {
+              <div class="huda-row-list">
+                @for (d of recentDocs; track d.id) {
+                  <div class="huda-row list-row">
+                    <div>
+                      <div class="row-title">
+                        {{ d.originalName || typeLabels[d.type] }}
+                      </div>
+                      <div class="huda-meta">
+                        {{ typeLabels[d.type] }}
+                        @if (d.createdAt) {
+                          · {{ d.createdAt | date: 'd MMM y' }}
+                        }
+                      </div>
+                    </div>
+                    <ion-icon name="document-text-outline" class="row-icon"></ion-icon>
+                  </div>
+                }
+              </div>
+            } @else {
+              <p class="huda-meta empty-line">
+                Nothing uploaded yet. Add lab reports or scans before your visit.
+              </p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="huda-action-bar">
+        <ion-button expand="block" class="huda-btn-primary" (click)="book()">
+          Book appointment
+        </ion-button>
+      </div>
+    }
+  </div>
+</ion-content>

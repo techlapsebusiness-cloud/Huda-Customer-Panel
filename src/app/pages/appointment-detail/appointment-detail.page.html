@@ -1,0 +1,237 @@
+<ion-header class="huda-ion-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/appointments" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Appointment</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="huda-page">
+  <ion-refresher slot="fixed" (ionRefresh)="load($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="huda-page-pad">
+    @if (loading) {
+      <div class="huda-card">
+        <div class="huda-card-pad">
+          <ion-skeleton-text animated style="width: 60%; height: 20px"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 40%; height: 14px; margin-top: 12px"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 85%; height: 14px; margin-top: 10px"></ion-skeleton-text>
+        </div>
+      </div>
+    } @else if (error) {
+      <div class="huda-card">
+        <div class="huda-card-pad">
+          <p class="err">{{ error }}</p>
+          <ion-button class="huda-btn-ghost" size="small" (click)="load()">
+            Retry
+          </ion-button>
+        </div>
+      </div>
+    } @else if (appt) {
+      <div class="huda-stack">
+        <!-- Live queue: the single dark band on this screen -->
+        @if (showQueue && queue) {
+          <div class="huda-queue-band">
+            <div class="huda-row">
+              <span class="huda-eyebrow light">Now serving</span>
+              <span class="live">
+                <span class="pulse"></span> Live
+              </span>
+            </div>
+            <div class="now-serving huda-mono">
+              {{ queue.nowServing !== null ? '#' + queue.nowServing : '—' }}
+            </div>
+
+            @if (queue.isBeingServed) {
+              <p class="your-turn">It's your turn — please head in.</p>
+            } @else {
+              <p class="position">
+                You are <strong>#{{ queue.myToken }}</strong>
+                @if (queue.peopleAhead > 0) {
+                  · {{ queue.peopleAhead }}
+                  {{ queue.peopleAhead === 1 ? 'person' : 'people' }} ahead ·
+                  ~{{ queue.etaMinutes ?? 0 }} min
+                } @else {
+                  · you're next
+                }
+              </p>
+            }
+
+            <div class="huda-meter">
+              <span [style.width.%]="queueProgress"></span>
+            </div>
+            <p class="muted refresh-note">Updates every 10 seconds</p>
+          </div>
+        }
+
+        <!-- Summary -->
+        <div class="huda-card">
+          <div class="huda-card-pad">
+            <div class="huda-row">
+              <span class="huda-eyebrow">{{ appt.clinicName }}</span>
+              <huda-badge
+                [variant]="badge(appt.status)"
+                [label]="statusLabel(appt.status)"
+              ></huda-badge>
+            </div>
+            <h1 class="when">{{ appt.date | date: 'EEEE, d MMMM y' }}</h1>
+            <div class="time huda-mono">
+              {{ appt.startTime }} – {{ appt.endTime }}
+            </div>
+
+            <div class="facts">
+              <div class="fact">
+                <div class="huda-meta">Doctor</div>
+                <div class="fact-value">{{ appt.doctorName }}</div>
+              </div>
+              <div class="fact">
+                <div class="huda-meta">Token</div>
+                <div class="fact-value huda-mono">#{{ appt.tokenNumber }}</div>
+              </div>
+              <div class="fact">
+                <div class="huda-meta">Patient</div>
+                <div class="fact-value">{{ appt.patientName }}</div>
+              </div>
+              <div class="fact">
+                <div class="huda-meta">Payment</div>
+                <div class="fact-value">{{ appt.paymentStatus }}</div>
+              </div>
+            </div>
+
+            @if (appt.reason) {
+              <div class="reason-block">
+                <div class="huda-meta">Reason for visit</div>
+                <p>{{ appt.reason }}</p>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Check-in QR -->
+        @if (isActive && appt.qrToken) {
+          <div class="huda-card">
+            <div class="huda-card-pad">
+              <h3 class="huda-card-title">Check-in code</h3>
+              <p class="huda-meta">
+                Show this at the front desk to join the queue.
+              </p>
+              <div class="qr-wrap">
+                <qrcode
+                  [qrdata]="appt.qrToken"
+                  [width]="180"
+                  [margin]="1"
+                  errorCorrectionLevel="M"
+                ></qrcode>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Status timeline -->
+        <div class="huda-card">
+          <div class="huda-card-pad">
+            <h3 class="huda-card-title">Progress</h3>
+            @if (appt.status === 'cancelled') {
+              <p class="cancelled-note">
+                This appointment was cancelled.
+              </p>
+            }
+            <div class="huda-timeline">
+              @for (step of timeline; track step.status; let i = $index) {
+                <div class="step" [ngClass]="stepClass(i)">
+                  <span class="marker">
+                    @if (stepClass(i) === 'done') {
+                      <ion-icon name="checkmark-outline"></ion-icon>
+                    } @else {
+                      {{ i + 1 }}
+                    }
+                  </span>
+                  <span class="label">{{ step.label }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Attached documents -->
+        <div class="huda-card">
+          <div class="huda-card-pad">
+            <h3 class="huda-card-title">Your documents</h3>
+            @if (documents.length) {
+              <div class="huda-row-list">
+                @for (d of documents.slice(0, 5); track d.id) {
+                  <a
+                    class="huda-row doc-row"
+                    [href]="d.fileUrl"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <div>
+                      <div class="doc-name">
+                        {{ d.originalName || typeLabels[d.type] }}
+                      </div>
+                      <div class="huda-meta">{{ typeLabels[d.type] }}</div>
+                    </div>
+                    <ion-icon name="open-outline"></ion-icon>
+                  </a>
+                }
+              </div>
+            } @else {
+              <p class="huda-meta">
+                Nothing attached. Add reports from the Records tab.
+              </p>
+            }
+          </div>
+        </div>
+
+        <!-- Clinic contact -->
+        <div class="huda-card">
+          <div class="huda-card-pad">
+            <h3 class="huda-card-title">{{ appt.clinicName }}</h3>
+            @if (appt.clinicAddress) {
+              <p class="huda-meta address">{{ appt.clinicAddress }}</p>
+            }
+            @if (appt.clinicPhone) {
+              <ion-button
+                class="huda-btn-ghost"
+                size="small"
+                (click)="callClinic()"
+              >
+                <ion-icon slot="start" name="call-outline"></ion-icon>
+                Call clinic
+              </ion-button>
+            }
+          </div>
+        </div>
+      </div>
+
+      @if (canCancel || canReschedule) {
+        <div class="huda-action-bar actions">
+          @if (canReschedule) {
+            <ion-button
+              expand="block"
+              class="huda-btn-primary"
+              [disabled]="acting"
+              (click)="reschedule()"
+            >
+              Reschedule
+            </ion-button>
+          }
+          @if (canCancel) {
+            <ion-button
+              expand="block"
+              class="huda-btn-ghost cancel-btn"
+              [disabled]="acting"
+              (click)="cancel()"
+            >
+              Cancel appointment
+            </ion-button>
+          }
+        </div>
+      }
+    }
+  </div>
+</ion-content>

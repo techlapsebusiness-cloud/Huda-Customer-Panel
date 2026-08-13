@@ -1,0 +1,101 @@
+<ion-content class="huda-page">
+  <ion-refresher slot="fixed" (ionRefresh)="load($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="huda-page-pad">
+    <huda-page-header
+      title="My visits"
+      subtitle="Appointments, tokens and outcomes"
+    ></huda-page-header>
+
+    <ion-segment
+      class="huda-segment scope"
+      [value]="scope"
+      (ionChange)="onScopeChange($any($event.detail.value))"
+    >
+      <ion-segment-button value="upcoming">
+        <ion-label>Upcoming</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="past">
+        <ion-label>Past</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    @if (loading) {
+      <div class="huda-stack">
+        @for (i of [1, 2, 3]; track i) {
+          <div class="huda-card">
+            <div class="huda-card-pad">
+              <ion-skeleton-text animated style="width: 45%; height: 16px"></ion-skeleton-text>
+              <ion-skeleton-text animated style="width: 70%; height: 13px; margin-top: 10px"></ion-skeleton-text>
+            </div>
+          </div>
+        }
+      </div>
+    } @else if (error) {
+      <div class="huda-card">
+        <div class="huda-card-pad">
+          <p class="err">{{ error }}</p>
+          <ion-button class="huda-btn-ghost" size="small" (click)="load()">
+            Retry
+          </ion-button>
+        </div>
+      </div>
+    } @else if (items.length) {
+      <div class="huda-stack">
+        @for (a of items; track a.id) {
+          <div class="huda-card lift appt" (click)="open(a.id)">
+            <div class="huda-card-pad">
+              <div class="huda-row">
+                <div class="when huda-mono">
+                  {{ a.date | date: 'EEE, d MMM y' }}
+                </div>
+                <huda-badge
+                  [variant]="badge(a.status)"
+                  [label]="statusLabel(a.status)"
+                ></huda-badge>
+              </div>
+              <div class="time-row">
+                <ion-icon name="time-outline"></ion-icon>
+                <span class="huda-mono">{{ a.startTime }}–{{ a.endTime }}</span>
+                <span class="dot">·</span>
+                <span class="token huda-mono">Token #{{ a.tokenNumber }}</span>
+              </div>
+              <div class="doc">{{ a.doctorName }}</div>
+              @if (a.reason) {
+                <div class="huda-meta reason">{{ a.reason }}</div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="huda-card">
+        <huda-empty-state
+          icon="calendar-clear-outline"
+          [title]="
+            scope === 'upcoming' ? 'No upcoming visits' : 'No past visits yet'
+          "
+          [body]="
+            scope === 'upcoming'
+              ? 'Book an appointment to reserve your token.'
+              : 'Completed and cancelled visits will show up here.'
+          "
+        >
+          @if (scope === 'upcoming') {
+            <ion-button class="huda-btn-primary" (click)="book()">
+              Book appointment
+            </ion-button>
+          }
+        </huda-empty-state>
+      </div>
+    }
+
+    <div class="huda-action-bar">
+      <ion-button expand="block" class="huda-btn-primary" (click)="book()">
+        Book appointment
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

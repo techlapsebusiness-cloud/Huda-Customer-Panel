@@ -1,0 +1,206 @@
+<ion-header class="huda-ion-header">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ booked ? 'Confirmed' : title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="huda-page">
+  <div class="huda-page-pad">
+    @if (booked) {
+      <div class="confirm">
+        <div class="tick">
+          <ion-icon name="checkmark-outline"></ion-icon>
+        </div>
+        <h1>You're booked</h1>
+        <p class="sub">
+          {{ booked.date | date: 'EEEE, d MMMM' }} at {{ booked.startTime }}
+        </p>
+
+        <div class="huda-inverse token-card">
+          <div class="muted">Your token</div>
+          <div class="token">#{{ booked.tokenNumber }}</div>
+          <div class="muted">{{ booked.doctorName }} · {{ clinicName }}</div>
+        </div>
+
+        <div class="huda-card qr-card">
+          <div class="huda-card-pad">
+            <h3 class="huda-card-title">Check-in code</h3>
+            <p class="huda-meta">
+              Show this at the front desk when you arrive.
+            </p>
+            <div class="qr-wrap">
+              <qrcode
+                [qrdata]="booked.qrToken || booked.id"
+                [width]="180"
+                [margin]="1"
+                errorCorrectionLevel="M"
+              ></qrcode>
+            </div>
+          </div>
+        </div>
+
+        <div class="huda-action-bar">
+          <ion-button
+            expand="block"
+            class="huda-btn-primary"
+            (click)="viewAppointment()"
+          >
+            View appointment
+          </ion-button>
+          <ion-button
+            expand="block"
+            fill="clear"
+            class="huda-link-btn"
+            (click)="done()"
+          >
+            Back to my visits
+          </ion-button>
+        </div>
+      </div>
+    } @else {
+      @if (clinics.length > 1) {
+        <label class="huda-field-label">Clinic</label>
+        <ion-select
+          class="huda-input"
+          interface="action-sheet"
+          [(ngModel)]="clinicSlug"
+          (ionChange)="onClinicChange()"
+        >
+          @for (c of clinics; track c.slug) {
+            <ion-select-option [value]="c.slug">{{ c.name }}</ion-select-option>
+          }
+        </ion-select>
+      }
+
+      <section class="step">
+        <div class="step-head">
+          <span class="huda-eyebrow">Step 1</span>
+          <h2>Choose a doctor</h2>
+        </div>
+        @if (loadingProviders) {
+          <ion-skeleton-text animated style="height: 56px; border-radius: 12px"></ion-skeleton-text>
+        } @else if (providers.length) {
+          <div class="doctor-list">
+            @for (p of providers; track p.id) {
+              <button
+                type="button"
+                class="doctor-row"
+                [class.selected]="providerId === p.id"
+                (click)="selectProvider(p.id)"
+              >
+                <span class="huda-avatar">{{ p.displayName.charAt(0) }}</span>
+                <span class="doc-meta">
+                  <span class="doc-name">{{ p.displayName }}</span>
+                  @if (p.title) {
+                    <span class="huda-meta">{{ p.title }}</span>
+                  }
+                </span>
+                @if (providerId === p.id) {
+                  <ion-icon name="checkmark-circle" class="pick"></ion-icon>
+                }
+              </button>
+            }
+          </div>
+        } @else {
+          <p class="huda-meta">No doctors are accepting online bookings here.</p>
+        }
+      </section>
+
+      <section class="step">
+        <div class="step-head">
+          <span class="huda-eyebrow">Step 2</span>
+          <h2>Pick a day</h2>
+        </div>
+        <div class="day-strip">
+          @for (d of days; track d.date) {
+            <button
+              type="button"
+              class="day-chip"
+              [class.selected]="date === d.date"
+              (click)="selectDate(d.date)"
+            >
+              <span class="wd">{{ d.weekday }}</span>
+              <span class="dd huda-mono">{{ d.day }}</span>
+            </button>
+          }
+        </div>
+      </section>
+
+      <section class="step">
+        <div class="step-head">
+          <span class="huda-eyebrow">Step 3</span>
+          <h2>Pick a time</h2>
+        </div>
+        @if (providers.length > 1 && !providerId) {
+          <p class="huda-meta">Choose a doctor to see their available times.</p>
+        } @else if (!date) {
+          <p class="huda-meta">Select a day to see available times.</p>
+        } @else if (loadingSlots) {
+          <div class="huda-chip-grid">
+            @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+              <ion-skeleton-text animated style="height: 42px; border-radius: 12px"></ion-skeleton-text>
+            }
+          </div>
+        } @else if (slots.length) {
+          <div class="huda-chip-grid">
+            @for (s of slots; track s.startTime) {
+              <button
+                type="button"
+                class="huda-chip-select"
+                [class.selected]="startTime === s.startTime"
+                (click)="startTime = s.startTime"
+              >
+                {{ s.startTime }}
+              </button>
+            }
+          </div>
+        } @else {
+          <p class="huda-meta">
+            No times left on this day. Try another date.
+          </p>
+        }
+      </section>
+
+      @if (!rescheduleId) {
+        <section class="step">
+          <div class="step-head">
+            <span class="huda-eyebrow">Step 4</span>
+            <h2>Reason for visit</h2>
+          </div>
+          <textarea
+            class="huda-text-input"
+            rows="3"
+            maxlength="500"
+            placeholder="e.g. Fever and sore throat for 3 days"
+            [(ngModel)]="reason"
+          ></textarea>
+        </section>
+      }
+
+      @if (error) {
+        <p class="form-error">{{ error }}</p>
+      }
+
+      <div class="huda-action-bar">
+        <ion-button
+          expand="block"
+          class="huda-btn-primary"
+          [disabled]="!canSubmit"
+          (click)="submit()"
+        >
+          @if (submitting) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else if (date && startTime) {
+            {{ rescheduleId ? 'Move to' : 'Confirm' }}
+            {{ date | date: 'd MMM' }}, {{ startTime }}
+          } @else {
+            Select a date and time
+          }
+        </ion-button>
+      </div>
+    }
+  </div>
+</ion-content>

@@ -1,0 +1,299 @@
+/*
+ * Customer-app mobile layer. The handoff grid is desktop-first (264px sidebar,
+ * 320-340px sticky rail, 28/32/56 padding); a 390px patient phone has room for
+ * none of that. Only layout is re-cut here — colors, type ramp, radii, shadows
+ * and badges keep using the shared tokens untouched.
+ */
+
+:root {
+  /* Handoff 28/32/56; bottom clears the tab bar + a sticky action bar. */
+  --content-pad-top: 18px;
+  --content-pad-x: 16px;
+  --content-pad-bottom: 96px;
+  --card-gap: 14px;
+  --kpi-gap: 12px;
+  --tabbar-height: 58px;
+}
+
+/* The sticky right rail becomes a sticky bottom action bar. */
+.huda-action-bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  margin: 18px calc(var(--content-pad-x) * -1) calc(var(--content-pad-bottom) * -1);
+  padding: 14px var(--content-pad-x) calc(14px + var(--ion-safe-area-bottom, 0px));
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.huda-action-bar ion-button {
+  margin: 0;
+}
+
+/* KPI strip: 4-up on desktop, 2-up on a phone (never 1-up — numbers pair well). */
+.huda-kpi-strip {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 560px) {
+  .huda-kpi-strip {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.huda-kpi-tile {
+  padding: 14px 16px;
+}
+
+.huda-kpi-tile .label {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+/* H1 23px is heavy at 390px; the ramp stays proportional. */
+.huda-page-header {
+  margin-bottom: 16px;
+}
+
+.huda-page-header h1 {
+  font-size: 21px;
+}
+
+.huda-card-pad {
+  padding: 16px 16px;
+}
+
+.huda-card-title {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+/* Stacked card rhythm — gaps, never nested boxes (handoff house rules). */
+.huda-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+}
+
+.huda-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.huda-row-list > * + * {
+  border-top: 1px solid var(--ink-100);
+}
+
+.huda-meta {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+/* Tab bar */
+ion-tab-bar.huda-tabbar {
+  --background: #fff;
+  --border: 1px solid var(--border-subtle);
+  height: var(--tabbar-height);
+  padding-bottom: var(--ion-safe-area-bottom, 0px);
+}
+
+ion-tab-bar.huda-tabbar ion-tab-button {
+  --color: var(--text-faint);
+  --color-selected: var(--brand-strong);
+  font-family: var(--font-body);
+}
+
+ion-tab-bar.huda-tabbar ion-tab-button ion-label {
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Live queue band — the one dark band allowed per screen (handoff §2). */
+.huda-queue-band {
+  background: var(--grad-ink);
+  color: #fff;
+  border-radius: var(--radius-modal);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+}
+
+.huda-queue-band .now-serving {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 52px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.huda-queue-band .stat-tile {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.huda-queue-band .muted {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12.5px;
+}
+
+/* Flat CSS meter — no chart libraries (handoff §4.10). */
+.huda-meter {
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.16);
+  overflow: hidden;
+}
+
+.huda-meter > span {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--grad-sky);
+  transition: width 0.4s ease;
+}
+
+/* Slot / date pickers */
+.huda-chip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(94px, 1fr));
+  gap: 10px;
+}
+
+.huda-chip-select {
+  border: 1px solid var(--border-default);
+  background: #fff;
+  border-radius: var(--radius-input);
+  padding: 11px 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-body);
+  text-align: center;
+  cursor: pointer;
+}
+
+.huda-chip-select.selected {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+  color: var(--brand-strong);
+  font-weight: 700;
+}
+
+.huda-chip-select:disabled {
+  background: var(--ink-50);
+  color: var(--text-faint);
+  cursor: not-allowed;
+}
+
+/* Numeric OTP boxes */
+.huda-otp-input {
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  padding: 14px 12px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-input);
+  background: #fff;
+  color: var(--text-strong);
+}
+
+.huda-otp-input:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(78, 147, 255, 0.18);
+}
+
+/* Plain text input matching the handoff field spec (§4.5). */
+.huda-text-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-input);
+  background: #fff;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-strong);
+}
+
+.huda-text-input:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(78, 147, 255, 0.18);
+}
+
+textarea.huda-text-input {
+  min-height: 72px;
+  resize: vertical;
+}
+
+/* OPD-style status timeline (handoff §4.7 stepper, laid out vertically). */
+.huda-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.huda-timeline .step {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding-bottom: 16px;
+  position: relative;
+}
+
+.huda-timeline .step:last-child {
+  padding-bottom: 0;
+}
+
+.huda-timeline .step .marker {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ink-100);
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  z-index: 1;
+}
+
+.huda-timeline .step.done .marker {
+  background: var(--brand-soft);
+  color: var(--brand-strong);
+}
+
+.huda-timeline .step.current .marker {
+  background: var(--brand);
+  color: #fff;
+}
+
+.huda-timeline .step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 10.5px;
+  top: 22px;
+  bottom: 0;
+  width: 1px;
+  background: var(--ink-100);
+}
+
+.huda-timeline .step .label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.huda-timeline .step:not(.done):not(.current) .label {
+  color: var(--text-faint);
+  font-weight: 500;
+}

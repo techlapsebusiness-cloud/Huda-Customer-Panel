@@ -1,0 +1,147 @@
+.huda-eyebrow.light {
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sky-400);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.now-serving {
+  margin: 10px 0 6px;
+}
+
+.position,
+.your-turn {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.your-turn {
+  font-weight: 700;
+  color: #fff;
+}
+
+.refresh-note {
+  margin: 10px 0 0;
+  font-size: 11.5px;
+}
+
+.when {
+  margin: 12px 0 2px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.02em;
+  color: var(--text-strong);
+}
+
+.time {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ink-100);
+}
+
+.fact-value {
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-strong);
+  text-transform: capitalize;
+}
+
+.reason-block {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ink-100);
+}
+
+.reason-block p {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  color: var(--text-body);
+}
+
+.qr-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.cancelled-note {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--danger-500);
+}
+
+.doc-row {
+  padding: 11px 0;
+  text-decoration: none;
+  color: inherit;
+}
+
+.doc-row:first-child {
+  padding-top: 2px;
+}
+
+.doc-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.doc-row ion-icon {
+  font-size: 17px;
+  color: var(--text-faint);
+}
+
+.address {
+  margin: 0 0 12px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cancel-btn {
+  --color: var(--danger-500);
+}
+
+.err {
+  margin: 0 0 12px;
+  font-size: 13.5px;
+  color: var(--danger-500);
+}

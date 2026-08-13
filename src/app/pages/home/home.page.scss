@@ -1,0 +1,95 @@
+.no-margin {
+  margin: 0;
+}
+
+.appt-when {
+  margin: 12px 0 2px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  color: var(--text-strong);
+}
+
+.appt-doc {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+.token-row {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ink-100);
+}
+
+.token {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--brand-strong);
+}
+
+.huda-eyebrow.light {
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.queue-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.queue-tiles .tile-value {
+  font-size: 17px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.track-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.track-row ion-icon {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.list-row {
+  padding: 12px 0;
+  cursor: pointer;
+}
+
+.list-row:first-child {
+  padding-top: 4px;
+}
+
+.row-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.row-icon {
+  font-size: 18px;
+  color: var(--text-faint);
+}
+
+.empty-line {
+  margin: 4px 0 0;
+}
+
+.error-card {
+  margin-bottom: var(--card-gap);
+}
+
+.error-card .err {
+  margin: 0 0 12px;
+  font-size: 13.5px;
+  color: var(--danger-500);
+}

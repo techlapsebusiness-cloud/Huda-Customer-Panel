@@ -1,0 +1,101 @@
+/**
+ * HUDA ERP design tokens — reconstructed from docs/HUDA-ERP-UI-HANDOFF.md §2–6.
+ * Replace with Groweb token pack import when available.
+ */
+:root {
+  /* Brand */
+  --brand: #4e93ff;
+  --brand-strong: #2f6fd6;
+  --brand-soft: #e8f1ff;
+  --azure-50: #f0f6ff;
+  --azure-200: #b7d4ff;
+
+  /* Sky / secondary */
+  --sky-400: #38bdf8;
+  --sky-500: #0ea5e9;
+  --grad-sky: linear-gradient(135deg, #38bdf8 0%, #4e93ff 100%);
+  --grad-brand: linear-gradient(135deg, #4e93ff 0%, #2f6fd6 100%);
+  --grad-ink: linear-gradient(145deg, #1b1c20 0%, #2a3344 100%);
+
+  /* Ink neutrals */
+  --ink-50: #f4f5f8;
+  --ink-100: #e8eaef;
+  --ink-200: #d0d4dc;
+  --ink-300: #a8afbc;
+  --ink-500: #6b7280;
+  --ink-700: #374151;
+  --ink-900: #1b1c20;
+
+  /* Text */
+  --text-strong: #1b1c20;
+  --text-body: #2f3540;
+  --text-muted: #5c6573;
+  --text-faint: #8b93a1;
+  --text-link: var(--brand-strong);
+
+  /* Surfaces */
+  --surface-page: #f6f7fa;
+  --surface-card: #ffffff;
+  --border-subtle: #e6e8ee;
+  --border-default: #d5d9e2;
+
+  /* Status */
+  --success-500: #0f7a52;
+  --success-50: #e6f6ef;
+  --warning-500: #b9791b;
+  --warning-50: #fff6e5;
+  --danger-500: #c0392b;
+  --danger-50: #fdecea;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(27, 28, 32, 0.04);
+  --shadow-sm: 0 2px 8px rgba(27, 28, 32, 0.06);
+  --shadow-md: 0 8px 24px rgba(27, 28, 32, 0.1);
+  --shadow-xl: 0 20px 48px rgba(27, 28, 32, 0.18);
+  --shadow-brand: 0 6px 16px rgba(78, 147, 255, 0.35);
+
+  /* Layout */
+  --sidebar-width: 264px;
+  --utility-height: 56px;
+  --content-pad-top: 28px;
+  --content-pad-x: 32px;
+  --content-pad-bottom: 56px;
+  --card-gap: 18px;
+  --kpi-gap: 14px;
+  --radius-input: 12px;
+  --radius-card: 16px;
+  --radius-modal: 20px;
+  --radius-pill: 999px;
+
+  /* Type */
+  --font-display: 'Poppins', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+
+  /* Ionic bridge */
+  --ion-color-primary: #4e93ff;
+  --ion-color-primary-rgb: 78, 147, 255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #2f6fd6;
+  --ion-color-primary-tint: #6ba5ff;
+
+  --ion-color-success: #0f7a52;
+  --ion-color-success-rgb: 15, 122, 82;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-warning: #b9791b;
+  --ion-color-warning-rgb: 185, 121, 27;
+  --ion-color-danger: #c0392b;
+  --ion-color-danger-rgb: 192, 57, 43;
+
+  --ion-background-color: var(--surface-page);
+  --ion-background-color-rgb: 246, 247, 250;
+  --ion-text-color: var(--text-body);
+  --ion-text-color-rgb: 47, 53, 64;
+  --ion-toolbar-background: var(--surface-card);
+  --ion-toolbar-color: var(--text-strong);
+  --ion-item-background: var(--surface-card);
+  --ion-card-background: var(--surface-card);
+  --ion-border-color: var(--border-subtle);
+  --ion-font-family: var(--font-body);
+}

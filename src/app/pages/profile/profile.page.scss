@@ -1,0 +1,170 @@
+.no-margin {
+  margin: 0;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.huda-avatar.big {
+  width: 48px;
+  height: 48px;
+  font-size: 16px;
+}
+
+.acct-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--text-strong);
+}
+
+/* Family switcher */
+.people {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-card);
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.person.selected {
+  border-color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.person-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: 1px;
+}
+
+.person-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.person-text .huda-meta {
+  text-transform: capitalize;
+}
+
+.person .pick {
+  font-size: 19px;
+  color: var(--brand-strong);
+}
+
+/* Completion nudge */
+.nudge {
+  cursor: pointer;
+}
+
+.nudge-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+
+.nudge ion-icon {
+  font-size: 18px;
+  color: var(--text-faint);
+}
+
+.nudge-meter {
+  height: 6px;
+  margin-top: 12px;
+  border-radius: var(--radius-pill);
+  background: var(--ink-100);
+  overflow: hidden;
+}
+
+.nudge-meter > span {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--grad-brand);
+  transition: width 0.3s ease;
+}
+
+/* Read-only details */
+.details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.detail.wide {
+  grid-column: 1 / -1;
+}
+
+.detail .value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.clinical {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ink-100);
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.none {
+  margin: 4px 0 0;
+}
+
+/* Edit form */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.allergy-label {
+  margin-top: 6px;
+}
+
+.hint {
+  margin: 6px 0 0;
+  line-height: 1.45;
+}
+
+.edit-actions {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.signout {
+  --color: var(--danger-500);
+}
