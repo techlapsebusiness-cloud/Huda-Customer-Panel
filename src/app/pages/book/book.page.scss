@@ -14,11 +14,56 @@
   color: var(--text-strong);
 }
 
-/* Doctors */
+.slot-count {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.slot-count.none {
+  color: var(--danger-500);
+}
+
+/* Doctors / clinics */
 .doctor-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.list-label {
+  margin: 14px 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.clinic-search {
+  padding: 0;
+  margin: 0 0 8px;
+}
+
+.clinic-picked {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--brand);
+  border-radius: var(--radius-card);
+  background: var(--brand-soft);
+  text-align: left;
+  cursor: pointer;
+}
+
+.clinic-picked .change {
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--brand-strong);
+  flex-shrink: 0;
 }
 
 .doctor-row {
@@ -72,21 +117,31 @@
 
 .day-chip {
   flex: 0 0 auto;
-  width: 56px;
-  padding: 10px 0;
+  width: 68px;
+  padding: 10px 4px 8px;
   border: 1px solid var(--border-default);
   border-radius: var(--radius-input);
   background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   cursor: pointer;
 }
 
 .day-chip.selected {
   border-color: var(--brand);
   background: var(--brand-soft);
+}
+
+.day-chip.full {
+  border-color: var(--danger-500);
+  background: var(--danger-50);
+  cursor: not-allowed;
+}
+
+.day-chip.full:disabled {
+  opacity: 1;
 }
 
 .day-chip .wd {
@@ -103,8 +158,27 @@
   color: var(--text-strong);
 }
 
+.day-chip .left {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--brand-strong);
+  letter-spacing: 0.01em;
+}
+
+.day-chip .left.muted {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.day-chip.full .wd,
+.day-chip.full .dd,
+.day-chip.full .left {
+  color: var(--danger-500);
+}
+
 .day-chip.selected .wd,
-.day-chip.selected .dd {
+.day-chip.selected .dd,
+.day-chip.selected .left {
   color: var(--brand-strong);
 }
 

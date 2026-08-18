@@ -7,6 +7,8 @@ import {
   AppointmentDetailDto,
   AppointmentDto,
   ClinicDto,
+  DirectoryClinic,
+  DayAvailabilityDto,
   DocumentDto,
   DocumentType,
   PaginationMeta,
@@ -69,6 +71,18 @@ export class PatientApiService {
     return (await this.get<ClinicDto[]>('/clinics')).data;
   }
 
+  async searchClinics(q: string): Promise<DirectoryClinic[]> {
+    const term = q.trim();
+    if (term.length < 2) return [];
+    const res = await firstValueFrom(
+      this.http.get<ApiEnvelope<DirectoryClinic[]>>(
+        `${environment.apiBaseUrl}/public/booking/clinics`,
+        { params: this.toParams({ q: term }) }
+      )
+    );
+    return res.data;
+  }
+
   async updateProfile(
     patientId: string,
     patch: Record<string, unknown>
@@ -90,12 +104,28 @@ export class PatientApiService {
     clinicSlug: string,
     date: string,
     providerId?: string
-  ): Promise<SlotDto[]> {
-    const res = await this.get<{ workDate: string; slots: SlotDto[] }>(
-      '/slots',
-      { clinicSlug, date, providerId }
-    );
-    return res.data.slots;
+  ): Promise<{ workDate: string; remaining: number; total: number; slots: SlotDto[] }> {
+    const res = await this.get<{
+      workDate: string;
+      remaining: number;
+      total: number;
+      slots: SlotDto[];
+    }>('/slots', { clinicSlug, date, providerId });
+    return res.data;
+  }
+
+  async availability(
+    clinicSlug: string,
+    from: string,
+    to: string,
+    providerId?: string
+  ): Promise<DayAvailabilityDto[]> {
+    const res = await this.get<{
+      from: string;
+      to: string;
+      days: DayAvailabilityDto[];
+    }>('/availability', { clinicSlug, from, to, providerId });
+    return res.data.days;
   }
 
   async appointments(
@@ -116,6 +146,7 @@ export class PatientApiService {
   async book(payload: {
     clinicSlug: string;
     patientId?: string;
+    patientName?: string;
     workDate: string;
     startTime: string;
     providerMembershipId?: string;

@@ -103,8 +103,7 @@ export class LoginPage implements OnDestroy {
     this.busy = true;
     this.error = '';
     try {
-      const account = this.auth.account();
-      if (account) this.auth.setAccount({ ...account, name: this.name.trim() });
+      await this.auth.updateName(this.name.trim());
       await this.finish();
     } catch (e) {
       this.error = apiErrorMessage(e, 'Could not save your details.');

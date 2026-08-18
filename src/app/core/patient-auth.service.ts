@@ -57,6 +57,17 @@ export class PatientAuthService {
     return res.data;
   }
 
+  async updateName(name: string): Promise<PatientAccountDto> {
+    const res = await firstValueFrom(
+      this.http.patch<ApiEnvelope<PatientAccountDto>>(
+        `${environment.apiBaseUrl}/patient/me`,
+        { name: name.trim() }
+      )
+    );
+    this.setAccount(res.data);
+    return res.data;
+  }
+
   async verifyOtp(
     phone: string,
     code: string,

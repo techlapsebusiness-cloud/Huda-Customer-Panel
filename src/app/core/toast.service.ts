@@ -27,8 +27,13 @@ export class ToastService {
 
 export function apiErrorMessage(err: unknown, fallback: string): string {
   if (err instanceof HttpErrorResponse) {
-    const body = err.error as { error?: { message?: string } } | null;
-    if (body?.error?.message) return body.error.message;
+    const body = err.error as {
+      error?: { message?: string; details?: Array<{ message?: string }> };
+    } | null;
+    const msg = body?.error?.message;
+    const detail = body?.error?.details?.[0]?.message;
+    if (msg && detail && msg !== detail) return `${msg}: ${detail}`;
+    if (msg) return msg;
     if (err.status === 0) return 'Cannot reach the clinic server';
   }
   return fallback;

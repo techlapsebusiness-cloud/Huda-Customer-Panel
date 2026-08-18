@@ -61,23 +61,75 @@
         </div>
       </div>
     } @else {
-      @if (clinics.length > 1) {
-        <label class="huda-field-label">Clinic</label>
-        <ion-select
-          class="huda-input"
-          interface="action-sheet"
-          [(ngModel)]="clinicSlug"
-          (ionChange)="onClinicChange()"
-        >
-          @for (c of clinics; track c.slug) {
-            <ion-select-option [value]="c.slug">{{ c.name }}</ion-select-option>
-          }
-        </ion-select>
-      }
-
       <section class="step">
         <div class="step-head">
           <span class="huda-eyebrow">Step 1</span>
+          <h2>Choose a clinic</h2>
+        </div>
+        @if (selectedClinic) {
+          <button type="button" class="clinic-picked" (click)="changeClinic()">
+            <span class="huda-avatar">{{ selectedClinic.name.charAt(0) }}</span>
+            <span class="doc-meta">
+              <span class="doc-name">{{ selectedClinic.name }}</span>
+              @if (selectedClinic.address) {
+                <span class="huda-meta">{{ selectedClinic.address }}</span>
+              }
+            </span>
+            <span class="change">Change</span>
+          </button>
+        } @else {
+          <ion-searchbar
+            class="clinic-search"
+            placeholder="Search clinic by name"
+            debounce="0"
+            [value]="clinicQuery"
+            (ionInput)="onClinicSearch($any($event))"
+          ></ion-searchbar>
+          @if (filteredLinkedClinics.length) {
+            <p class="list-label">Your clinics</p>
+            <div class="doctor-list">
+              @for (c of filteredLinkedClinics; track c.slug) {
+                <button type="button" class="doctor-row" (click)="pickClinic(c)">
+                  <span class="huda-avatar">{{ c.name.charAt(0) }}</span>
+                  <span class="doc-meta">
+                    <span class="doc-name">{{ c.name }}</span>
+                    @if (c.address) {
+                      <span class="huda-meta">{{ c.address }}</span>
+                    }
+                  </span>
+                </button>
+              }
+            </div>
+          }
+          @if (searchHits.length) {
+            <p class="list-label">Search results</p>
+            <div class="doctor-list">
+              @for (c of searchHits; track c.slug) {
+                <button type="button" class="doctor-row" (click)="pickClinic(c)">
+                  <span class="huda-avatar">{{ c.name.charAt(0) }}</span>
+                  <span class="doc-meta">
+                    <span class="doc-name">{{ c.name }}</span>
+                    @if (c.address) {
+                      <span class="huda-meta">{{ c.address }}</span>
+                    }
+                  </span>
+                </button>
+              }
+            </div>
+          } @else if (searchingClinics) {
+            <ion-skeleton-text animated style="height: 56px; border-radius: 12px"></ion-skeleton-text>
+          } @else if (clinicQuery.trim().length >= 2) {
+            <p class="huda-meta">No clinics match that name.</p>
+          } @else if (!filteredLinkedClinics.length) {
+            <p class="huda-meta">Type at least 2 letters to find a clinic.</p>
+          }
+        }
+      </section>
+
+      @if (selectedClinic) {
+      <section class="step">
+        <div class="step-head">
+          <span class="huda-eyebrow">Step 2</span>
           <h2>Choose a doctor</h2>
         </div>
         @if (loadingProviders) {
@@ -108,10 +160,12 @@
           <p class="huda-meta">No doctors are accepting online bookings here.</p>
         }
       </section>
+      }
 
+      @if (providerId) {
       <section class="step">
         <div class="step-head">
-          <span class="huda-eyebrow">Step 2</span>
+          <span class="huda-eyebrow">Step 3</span>
           <h2>Pick a day</h2>
         </div>
         <div class="day-strip">
@@ -120,10 +174,17 @@
               type="button"
               class="day-chip"
               [class.selected]="date === d.date"
-              (click)="selectDate(d.date)"
+              [class.full]="d.remaining === 0"
+              [disabled]="d.remaining === 0"
+              (click)="selectDate(d)"
             >
               <span class="wd">{{ d.weekday }}</span>
               <span class="dd huda-mono">{{ d.day }}</span>
+              @if (d.remaining !== null) {
+                <span class="left">{{ remainingLabel(d.remaining) }}</span>
+              } @else if (loadingAvailability) {
+                <span class="left muted">…</span>
+              }
             </button>
           }
         </div>
@@ -131,12 +192,18 @@
 
       <section class="step">
         <div class="step-head">
-          <span class="huda-eyebrow">Step 3</span>
+          <span class="huda-eyebrow">Step 4</span>
           <h2>Pick a time</h2>
+          @if (date && dayRemaining !== null) {
+            <p class="slot-count" [class.none]="dayRemaining === 0">
+              {{ remainingLabel(dayRemaining) }}
+              @if (dayTotal) {
+                of {{ dayTotal }}
+              }
+            </p>
+          }
         </div>
-        @if (providers.length > 1 && !providerId) {
-          <p class="huda-meta">Choose a doctor to see their available times.</p>
-        } @else if (!date) {
+        @if (!date) {
           <p class="huda-meta">Select a day to see available times.</p>
         } @else if (loadingSlots) {
           <div class="huda-chip-grid">
@@ -151,23 +218,30 @@
                 type="button"
                 class="huda-chip-select"
                 [class.selected]="startTime === s.startTime"
+                [class.full]="(s.remaining ?? 1) === 0"
+                [disabled]="(s.remaining ?? 1) === 0"
                 (click)="startTime = s.startTime"
               >
-                {{ s.startTime }}
+                <span>{{ s.startTime }}</span>
+                <span class="chip-left">{{ (s.remaining ?? 1) === 0 ? 'Full' : '1 left' }}</span>
               </button>
             }
           </div>
+          @if (freeSlotCount === 0) {
+            <p class="form-error">No times left on this day. Try another date.</p>
+          }
         } @else {
-          <p class="huda-meta">
+          <p class="form-error">
             No times left on this day. Try another date.
           </p>
         }
       </section>
+      }
 
-      @if (!rescheduleId) {
+      @if (selectedClinic && !rescheduleId) {
         <section class="step">
           <div class="step-head">
-            <span class="huda-eyebrow">Step 4</span>
+            <span class="huda-eyebrow">Step 5</span>
             <h2>Reason for visit</h2>
           </div>
           <textarea
@@ -196,6 +270,10 @@
           } @else if (date && startTime) {
             {{ rescheduleId ? 'Move to' : 'Confirm' }}
             {{ date | date: 'd MMM' }}, {{ startTime }}
+          } @else if (!selectedClinic) {
+            Choose a clinic
+          } @else if (!providerId) {
+            Choose a doctor
           } @else {
             Select a date and time
           }

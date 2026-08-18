@@ -46,6 +46,13 @@ export interface SelfServicePolicy {
   maxReschedules: number;
 }
 
+export interface DirectoryClinic {
+  slug: string;
+  name: string;
+  address: string;
+  phone: string;
+}
+
 export interface ClinicDto {
   slug: string;
   name: string;
@@ -54,6 +61,7 @@ export interface ClinicDto {
   timezone: string;
   bookingEnabled: boolean;
   selfService: SelfServicePolicy;
+  maxAdvanceDays?: number;
 }
 
 export interface ProviderDto {
@@ -65,6 +73,13 @@ export interface ProviderDto {
 export interface SlotDto {
   startTime: string;
   endTime?: string;
+  remaining?: number;
+}
+
+export interface DayAvailabilityDto {
+  date: string;
+  remaining: number;
+  total: number;
 }
 
 export type AppointmentStatus =
