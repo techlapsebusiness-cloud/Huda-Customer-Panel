@@ -27,6 +27,13 @@
   border-top: 1px solid var(--border-subtle);
 }
 
+.huda-action-bar.in-tabs {
+  /* ion-content's scrollport extends under the tab bar by --offset-bottom. */
+  bottom: var(--offset-bottom, calc(var(--tabbar-height) + var(--ion-safe-area-bottom, 0px)));
+  margin-bottom: 0;
+  padding-bottom: 14px;
+}
+
 .huda-action-bar ion-button {
   margin: 0;
 }

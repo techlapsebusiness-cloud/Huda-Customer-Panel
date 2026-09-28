@@ -21,7 +21,31 @@ export interface PatientAccountDto {
 
 export type Relationship = 'self' | 'child' | 'parent' | 'spouse' | 'other';
 
-/** A clinic-side patient chart linked to the signed-in account. */
+export interface PatientBillLineDto {
+  id: string;
+  description: string;
+  quantity: number;
+  amountPaise: number;
+}
+
+export interface PatientBillDto {
+  id: string;
+  billNumber: string | null;
+  type: string;
+  status: string;
+  paymentStatus: 'unpaid' | 'partial' | 'paid';
+  issuedAt: string | null;
+  subtotalPaise: number;
+  cgstPaise: number;
+  sgstPaise: number;
+  igstPaise: number;
+  roundOffPaise: number;
+  grandTotalPaise: number;
+  amountPaidPaise: number;
+  clinicName: string;
+  lineItems: PatientBillLineDto[];
+}
+
 export interface PatientProfileDto {
   id: string;
   name: string;

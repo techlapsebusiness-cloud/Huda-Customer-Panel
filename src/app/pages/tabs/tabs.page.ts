@@ -22,6 +22,10 @@ import { ProfileStore } from '../../core/profile.store';
           <ion-icon name="document-text-outline"></ion-icon>
           <ion-label>Records</ion-label>
         </ion-tab-button>
+        <ion-tab-button tab="bills">
+          <ion-icon name="receipt-outline"></ion-icon>
+          <ion-label>Bills</ion-label>
+        </ion-tab-button>
         <ion-tab-button tab="profile">
           <ion-icon name="person-outline"></ion-icon>
           <ion-label>Profile</ion-label>

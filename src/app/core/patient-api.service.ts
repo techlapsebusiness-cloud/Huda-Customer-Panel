@@ -14,6 +14,7 @@ import {
   PaginationMeta,
   PatientAccountDto,
   PatientProfileDto,
+  PatientBillDto,
   ProviderDto,
   QueueStatusDto,
   SlotDto,
@@ -210,5 +211,13 @@ export class PatientApiService {
 
   async deleteDocument(id: string): Promise<void> {
     await firstValueFrom(this.http.delete(this.url(`/documents/${id}`)));
+  }
+
+  async bills(patientId?: string): Promise<PatientBillDto[]> {
+    return (await this.get<PatientBillDto[]>('/bills', { patientId })).data;
+  }
+
+  async bill(id: string): Promise<PatientBillDto> {
+    return (await this.get<PatientBillDto>(`/bills/${id}`)).data;
   }
 }

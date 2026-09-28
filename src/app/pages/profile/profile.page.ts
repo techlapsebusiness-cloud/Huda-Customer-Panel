@@ -47,6 +47,13 @@ export class ProfilePage {
     void this.profiles.load().catch(() => undefined);
   }
 
+  formatVisit(value: string | null | undefined): string {
+    const raw = String(value ?? "").slice(0, 10);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return "—";
+    const [y, m, d] = raw.split("-").map(Number);
+    return new Date(y, (m ?? 1) - 1, d ?? 1).toLocaleDateString();
+  }
+
   get active(): PatientProfileDto | null {
     return this.auth.activeProfile();
   }

@@ -35,6 +35,11 @@ const routes: Routes = [
           import('./pages/records/records.page').then((m) => m.RecordsPage),
       },
       {
+        path: 'bills',
+        loadComponent: () =>
+          import('./pages/bills/bills.page').then((m) => m.BillsPage),
+      },
+      {
         path: 'profile',
         loadComponent: () =>
           import('./pages/profile/profile.page').then((m) => m.ProfilePage),
@@ -55,6 +60,12 @@ const routes: Routes = [
       import('./pages/appointment-detail/appointment-detail.page').then(
         (m) => m.AppointmentDetailPage
       ),
+  },
+  {
+    path: 'bill/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/bill-detail/bill-detail.page').then((m) => m.BillDetailPage),
   },
   { path: '**', redirectTo: 'tabs/home' },
 ];

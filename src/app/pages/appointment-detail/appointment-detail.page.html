@@ -208,7 +208,7 @@
         </div>
       </div>
 
-      @if (canCancel || canReschedule) {
+      @if (canCancel || canReschedule || appt.clinicPhone) {
         <div class="huda-action-bar actions">
           @if (canReschedule) {
             <ion-button
@@ -228,6 +228,12 @@
               (click)="cancel()"
             >
               Cancel appointment
+            </ion-button>
+          }
+          @if (!canCancel && !canReschedule && appt.clinicPhone) {
+            <ion-button expand="block" class="huda-btn-primary" (click)="callClinic()">
+              <ion-icon slot="start" name="call-outline"></ion-icon>
+              Call clinic
             </ion-button>
           }
         </div>
